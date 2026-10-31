@@ -3,23 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>安卓芯片性能榜 · 安兔兔 SoC 天梯</title>
+<title>安卓芯片性能榜 · 多源交叉对比</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   :root{
-    --bg:#08090d;
-    --panel:#12141b;
-    --panel2:#171a23;
-    --line:#242836;
-    --txt:#eef1f7;
-    --dim:#8b93a7;
-    --dim2:#5d6579;
-    --xiaomi:#ff6a1f;
-    --qualcomm:#e23a2e;
-    --mediatek:#3b7dff;
+    --bg:#08090d;--panel:#12141b;--panel2:#171a23;--line:#242836;
+    --txt:#eef1f7;--dim:#8b93a7;--dim2:#5d6579;
+    --xiaomi:#ff6a1f;--qualcomm:#e23a2e;--mediatek:#3b7dff;
     --gold:#ffd35c;
-    --silver:#cfd6e4;
-    --bronze:#e0904f;
   }
   body{
     background:
@@ -28,20 +19,15 @@
       var(--bg);
     color:var(--txt);
     font-family:"HarmonyOS Sans SC","PingFang SC","Microsoft YaHei",system-ui,-apple-system,sans-serif;
-    min-height:100vh;
-    padding:38px 18px 70px;
-    -webkit-font-smoothing:antialiased;
+    min-height:100vh;padding:38px 18px 70px;-webkit-font-smoothing:antialiased;
   }
-  .wrap{max-width:860px;margin:0 auto}
+  .wrap{max-width:920px;margin:0 auto}
 
-  /* ── 头部 ── */
-  header{margin-bottom:34px}
+  header{margin-bottom:30px}
   .kicker{
-    display:inline-flex;align-items:center;gap:8px;
-    font-size:11.5px;letter-spacing:.16em;color:#7d8598;
-    text-transform:uppercase;margin-bottom:16px;
-    padding:6px 12px;border:1px solid var(--line);border-radius:999px;
-    background:rgba(255,255,255,.02);
+    display:inline-flex;align-items:center;gap:8px;font-size:11.5px;letter-spacing:.16em;
+    color:#7d8598;text-transform:uppercase;margin-bottom:16px;padding:6px 12px;
+    border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.02);
   }
   .dot{width:6px;height:6px;border-radius:50%;background:#3d8bff;box-shadow:0 0 10px #3d8bff;animation:pulse 2.2s infinite}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
@@ -50,95 +36,95 @@
     background:linear-gradient(102deg,#fff 8%,#b9c6e6 52%,#7f8aa8 96%);
     -webkit-background-clip:text;background-clip:text;color:transparent;
   }
-  h1 em{font-style:normal;color:var(--qualcomm);-webkit-text-fill-color:var(--qualcomm)}
-  .sub{margin-top:14px;font-size:14px;line-height:1.75;color:var(--dim);max-width:600px}
+  h1 em{font-style:normal;color:#ff6a1f;-webkit-text-fill-color:#ff6a1f}
+  .sub{margin-top:14px;font-size:14px;line-height:1.75;color:var(--dim);max-width:640px}
   .sub b{color:#c6cfe2;font-weight:600}
-  .meta{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px}
-  .chip{
-    font-size:12px;color:#9aa3b8;padding:6px 11px;border-radius:8px;
-    background:rgba(255,255,255,.035);border:1px solid var(--line);
-  }
-  .chip strong{color:#dfe6f5;font-weight:600}
 
-  /* ── 领奖台 ── */
-  .podium{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;margin:34px 0 30px;align-items:end}
-  .pod{
-    position:relative;border-radius:16px;padding:18px 15px 16px;
+  .nav{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+  .nav a{
+    font-size:12px;color:#9aa3b8;padding:7px 12px;border-radius:8px;text-decoration:none;
+    background:rgba(255,255,255,.035);border:1px solid var(--line);transition:.16s;
+  }
+  .nav a:hover{color:#fff;border-color:#3d8bff;background:rgba(61,139,255,.12)}
+
+  h2.sec{
+    font-size:13px;letter-spacing:.14em;color:#7d8598;text-transform:uppercase;
+    margin:44px 0 16px;padding-bottom:10px;border-bottom:1px solid var(--line);font-weight:700;
+  }
+  h2.sec i{font-style:normal;color:#3d8bff;margin-right:8px}
+
+  /* 维度冠军 */
+  .winners{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:11px}
+  .wcard{
+    position:relative;border-radius:15px;padding:17px 16px;
     background:linear-gradient(168deg,var(--panel2),var(--panel));
     border:1px solid var(--line);overflow:hidden;
   }
-  .pod::before{
-    content:"";position:absolute;inset:0 0 auto 0;height:2px;
-    background:linear-gradient(90deg,transparent,var(--c,#3b7dff),transparent);
-  }
-  .pod.p1{border-color:rgba(255,211,92,.32);background:linear-gradient(168deg,#221d10,#14141a);padding-top:26px;padding-bottom:22px}
-  .pod.p1::before{background:linear-gradient(90deg,transparent,var(--gold),transparent)}
-  .rank-n{
-    font-size:11px;letter-spacing:.2em;color:var(--dim2);font-weight:700;margin-bottom:9px;
-  }
-  .pod.p1 .rank-n{color:var(--gold)}
-  .pod .brand{font-size:10.5px;letter-spacing:.1em;font-weight:700;margin-bottom:6px;opacity:.95}
-  .pod .name{font-size:14.5px;font-weight:700;line-height:1.32;letter-spacing:-.01em;margin-bottom:12px;min-height:38px}
-  .pod.p1 .name{font-size:17px}
-  .pod .score{font-size:clamp(19px,4.6vw,25px);font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
-  .pod.p1 .score{color:var(--gold);font-size:clamp(22px,5.2vw,29px)}
-  .pod .score span{font-size:11px;font-weight:500;color:var(--dim2);margin-left:4px;letter-spacing:0}
-  .bar-mini{height:4px;border-radius:99px;background:rgba(255,255,255,.07);margin-top:13px;overflow:hidden}
-  .bar-mini i{display:block;height:100%;border-radius:99px;background:var(--c);box-shadow:0 0 12px var(--c)}
+  .wcard::before{content:"";position:absolute;inset:0 0 auto 0;height:2px;background:linear-gradient(90deg,transparent,var(--c),transparent)}
+  .wcard .wl{font-size:10.5px;letter-spacing:.13em;color:var(--dim2);font-weight:700;margin-bottom:9px}
+  .wcard .wn{font-size:15px;font-weight:700;line-height:1.3;margin-bottom:8px}
+  .wcard .wv{font-size:19px;font-weight:800;color:var(--c);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+  .wcard .wv small{font-size:11px;color:var(--dim2);font-weight:500;margin-left:3px}
+  .wcard .wr{font-size:11px;color:var(--dim2);margin-top:7px;line-height:1.5}
 
-  /* ── 列表 ── */
-  .list-head{
-    display:flex;align-items:baseline;justify-content:space-between;
-    padding:0 4px 12px;border-bottom:1px solid var(--line);margin-bottom:4px;
+  /* 对比表 */
+  .tblwrap{overflow-x:auto;border-radius:14px;border:1px solid var(--line);background:var(--panel)}
+  table{width:100%;border-collapse:collapse;font-size:13px;min-width:640px}
+  thead th{
+    text-align:left;padding:13px 14px;font-size:11px;letter-spacing:.08em;color:#7d8598;
+    font-weight:700;text-transform:uppercase;background:rgba(255,255,255,.025);
+    border-bottom:1px solid var(--line);white-space:nowrap;
   }
-  .list-head h2{font-size:14.5px;font-weight:700;letter-spacing:.02em}
-  .list-head span{font-size:11.5px;color:var(--dim2)}
+  thead th small{display:block;font-size:9.5px;letter-spacing:0;color:var(--dim2);text-transform:none;margin-top:3px;font-weight:500}
+  tbody td{padding:14px;border-bottom:1px solid rgba(36,40,54,.55);vertical-align:middle}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr:hover{background:rgba(255,255,255,.022)}
+  .chip-cell{display:flex;align-items:center;gap:9px;white-space:nowrap}
+  .tag{font-size:9.5px;font-weight:800;letter-spacing:.06em;padding:2.5px 6px;border-radius:5px;color:#0b0c10;flex-shrink:0}
+  .cname{font-weight:650;letter-spacing:-.01em}
+  td.num{font-variant-numeric:tabular-nums;font-weight:700;font-size:14px;letter-spacing:-.01em;white-space:nowrap}
+  td.num.best{color:var(--gold)}
+  td.num.na{color:#41495c;font-weight:500}
+  td.num small{display:block;font-size:9.5px;color:var(--dim2);font-weight:500;margin-top:2px;letter-spacing:0}
+  .bestmark{font-size:9px;background:var(--gold);color:#1a1405;padding:1px 4px;border-radius:3px;margin-left:5px;font-weight:800;vertical-align:middle}
+
+  /* 榜单单列 */
   .row{
-    display:grid;
-    grid-template-columns:34px 1fr auto;
-    gap:13px;align-items:center;
-    padding:15px 4px;border-bottom:1px solid rgba(36,40,54,.62);
-    transition:background .18s;
+    display:grid;grid-template-columns:34px 1fr auto;gap:13px;align-items:center;
+    padding:14px 4px;border-bottom:1px solid rgba(36,40,54,.62);transition:background .18s;
   }
   .row:hover{background:rgba(255,255,255,.022)}
-  .row .idx{
-    font-size:15px;font-weight:800;color:var(--dim2);font-variant-numeric:tabular-nums;text-align:center;
-  }
+  .row .idx{font-size:15px;font-weight:800;color:var(--dim2);font-variant-numeric:tabular-nums;text-align:center}
   .row .body{min-width:0}
   .row .top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:5px}
-  .tag{
-    font-size:9.5px;font-weight:800;letter-spacing:.07em;padding:2.5px 6px;border-radius:5px;
-    color:#0b0c10;white-space:nowrap;
-  }
   .row .nm{font-size:14px;font-weight:650;letter-spacing:-.01em}
   .row .arch{font-size:11px;color:var(--dim2);line-height:1.5;font-variant-numeric:tabular-nums}
   .row .right{text-align:right}
-  .row .tot{font-size:15.5px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+  .row .tot{font-size:15px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
   .row .tot span{font-size:10px;color:var(--dim2);font-weight:500;margin-left:2px}
   .row .split{font-size:10.5px;color:var(--dim2);margin-top:3px;font-variant-numeric:tabular-nums}
   .track{height:5px;border-radius:99px;background:rgba(255,255,255,.055);margin-top:8px;overflow:hidden}
   .track i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--c),color-mix(in srgb,var(--c) 45%,#fff));opacity:.9}
 
-  /* ── 品牌速览 ── */
-  .brands{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:11px;margin:36px 0 0}
-  .bcard{
-    padding:16px;border-radius:14px;background:var(--panel);border:1px solid var(--line);
-    border-left:3px solid var(--c);
+  .note{
+    margin-top:16px;padding:16px 17px;border-radius:13px;background:rgba(59,125,255,.055);
+    border:1px solid rgba(59,125,255,.18);font-size:12px;line-height:1.85;color:#9aa3b8;
   }
-  .bcard .bn{font-size:13.5px;font-weight:700;margin-bottom:7px}
-  .bcard .bd{font-size:11.5px;line-height:1.65;color:var(--dim)}
+  .note b{color:#cfd8ea;font-weight:700}
+  .note p+p{margin-top:9px}
 
-  footer{margin-top:38px;padding-top:20px;border-top:1px solid var(--line);font-size:11.5px;line-height:1.85;color:var(--dim2)}
+  footer{margin-top:38px;padding-top:20px;border-top:1px solid var(--line);font-size:11.5px;line-height:1.9;color:var(--dim2)}
   footer b{color:#96a0b6;font-weight:600}
   footer a{color:#6b9dff;text-decoration:none;border-bottom:1px solid rgba(107,157,255,.3)}
+  .srcs{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+  .srcs a{font-size:11px;padding:5px 9px;border-radius:6px;background:rgba(255,255,255,.03);border:1px solid var(--line);color:#8b93a7;text-decoration:none;border-bottom:1px solid var(--line)}
+  .srcs a:hover{color:#c6cfe2;border-color:#3d8bff}
 
   @media(max-width:560px){
     body{padding:26px 14px 54px}
-    .podium{grid-template-columns:1fr;gap:9px}
-    .pod.p1{order:-1}
-    .pod .name{min-height:0}
     .row{grid-template-columns:26px 1fr auto;gap:10px}
     .row .arch{display:none}
+    .winners{grid-template-columns:1fr}
   }
 </style>
 </head>
@@ -146,53 +132,143 @@
 <div class="wrap">
 
   <header>
-    <div class="kicker"><i class="dot"></i>2026 · 10 月榜</div>
-    <h1>安卓手机芯片<br><em>性能排行</em></h1>
+    <div class="kicker"><i class="dot"></i>多源交叉 · 2026-11 更新</div>
+    <h1>安卓芯片<br><em>四个维度，四个赢家</em></h1>
     <p class="sub">
-      只看安卓。<b>苹果 A 系列已剔除</b>——安兔兔的 SoC 天梯榜本来就是安卓主场，iOS 设备单独在另一张榜上排。
-      下面这份是安卓阵营目前跑分最靠前的 20 颗芯片。
+      只看安卓，苹果全剔。光看一家跑分容易被带节奏——这里把 <b>安兔兔</b>、<b>Geekbench 6</b>、<b>3DMark</b> 三家的数据摆一起看，
+      结论很有意思：<b>换个测试，第一名就换人</b>。
     </p>
-    <div class="meta">
-      <div class="chip">数据源 <strong>安兔兔 SoC 天梯榜</strong></div>
-      <div class="chip">统计口径 <strong>该 SoC 全机型跑分均值</strong></div>
-      <div class="chip">上榜 <strong>20 颗</strong></div>
-    </div>
+    <nav class="nav">
+      <a href="#winners">各维度冠军</a>
+      <a href="#compare">多源对比表</a>
+      <a href="#antutu">安兔兔完整榜</a>
+      <a href="#caveat">数据怎么读</a>
+    </nav>
   </header>
 
-  <section class="podium" id="podium"></section>
-
-  <div class="list-head">
-    <h2>第 4 – 20 名</h2>
-    <span>总分 / CPU / GPU（安兔兔）</span>
+  <h2 class="sec" id="winners"><i>01</i>谁在哪个维度最强</h2>
+  <div class="winners">
+    <div class="wcard" style="--c:var(--xiaomi)">
+      <div class="wl">安兔兔 · 综合</div>
+      <div class="wn">玄戒 O3</div>
+      <div class="wv">3,010,770<small>分</small></div>
+      <div class="wr">领先第二名骁龙 8 超级至尊版 Gen 6 约 9.9 万分</div>
+    </div>
+    <div class="wcard" style="--c:var(--qualcomm)">
+      <div class="wl">Geekbench 6 · 单核</div>
+      <div class="wn">骁龙 8 超级至尊版 Gen 6</div>
+      <div class="wv">4,300<small>分</small></div>
+      <div class="wr">双 5GHz 超大核的活儿，单线程还是高通最强</div>
+    </div>
+    <div class="wcard" style="--c:var(--xiaomi)">
+      <div class="wl">Geekbench 6 · 多核</div>
+      <div class="wn">玄戒 O3</div>
+      <div class="wv">15,096<small>分</small></div>
+      <div class="wr">10 核全大核堆出来的，已经摸到桌面级芯片</div>
+    </div>
+    <div class="wcard" style="--c:var(--qualcomm)">
+      <div class="wl">3DMark · 图形</div>
+      <div class="wn">骁龙 8 超级至尊版 Gen 6</div>
+      <div class="wv">9,900<small>WLE</small></div>
+      <div class="wr">GPU 领先上代 Gen 5 约 41%，游戏这块没悬念</div>
+    </div>
   </div>
-  <section id="list"></section>
 
-  <section class="brands">
-    <div class="bcard" style="--c:var(--xiaomi)">
-      <div class="bn">小米 · 玄戒</div>
-      <div class="bd">自研第二代旗舰，榜上唯一挤进前二的非高通/联发科芯片，O3 直接坐稳头名。</div>
-    </div>
-    <div class="bcard" style="--c:var(--qualcomm)">
-      <div class="bn">高通 · 骁龙</div>
-      <div class="bd">前十占四席，GPU 依旧最能打，超大核频率已经冲到 5GHz 以上。</div>
-    </div>
-    <div class="bcard" style="--c:var(--mediatek)">
-      <div class="bn">联发科 · 天玑</div>
-      <div class="bd">前十占五席，机型覆盖面最广，9500 系列还在大量走量。</div>
-    </div>
-  </section>
+  <h2 class="sec" id="compare"><i>02</i>同一批芯片，三家数据摆一起</h2>
+  <div class="tblwrap">
+    <table>
+      <thead>
+        <tr>
+          <th>芯片</th>
+          <th>安兔兔<small>SoC 榜均值</small></th>
+          <th>Geekbench 6 单核<small>实测 / 官方</small></th>
+          <th>Geekbench 6 多核<small>实测 / 官方</small></th>
+          <th>3DMark<small>图形性能</small></th>
+        </tr>
+      </thead>
+      <tbody id="cmp"></tbody>
+    </table>
+  </div>
+  <div class="note">
+    <p><b>看表能看出来的事</b>：安兔兔综合是玄戒 O3 第一，但拆开看，单核和 GPU 都被骁龙 8 超级至尊版 Gen 6 拿走，玄戒赢在多核和综合。</p>
+    <p>天玑 9600 Pro 三项都稳在第三，没有单项第一，但也没有短板——这也是它为什么走量走得最好。</p>
+  </div>
+
+  <h2 class="sec" id="antutu"><i>03</i>安兔兔完整榜 · 安卓前 20</h2>
+  <div id="list"></div>
+
+  <h2 class="sec" id="caveat"><i>04</i>这些数字怎么读</h2>
+  <div class="note">
+    <p><b>安兔兔那列</b>是官网 SoC 天梯榜的<b>全机型跑分均值</b>，不是极限值，所以比媒体吹的「实验室 522 万」低一大截——那是低温特挑环境，不能拿来比。</p>
+    <p><b>Geekbench 那两列</b>混了两种来源：玄戒 O3 用的是小白测评零售实测（3854 / 15096），骁龙和天玑优先用工程机或 QRD 参考设计数据。<b>工程机 ≠ 零售机</b>，联发科工程机向来调得保守，零售版一般会放开一些。</p>
+    <p><b>3DMark 那列最乱</b>：骁龙 8 超级至尊版 Gen 6 同时有 Wild Life Extreme（9900）和 Steel Nomad Light（4350）两个口径，天玑和玄戒只有 Steel Nomad Light。<b>不同测试之间不能直接比大小</b>，所以我把测试名标在数字下面，只做同口径比较。</p>
+    <p><b>苹果没进来</b>：安兔兔 SoC 榜本来就不统计 A 系列，iOS 设备在另一张榜上；Geekbench 那边的 A20 Pro 分数虽然高，但按你的要求全剔了。</p>
+  </div>
 
   <footer>
-    <b>数据说明</b><br>
-    分数取自 <a href="https://www.antutu.com/ranking/soc" target="_blank" rel="noopener">安兔兔 SoC 天梯榜</a>，
-    是该 SoC 所有机型的跑分平均值，不是实验室极限值，也不构成购买建议。<br>
-    本页只收安卓平台芯片；苹果 A 系列不在此榜统计范围内，所以不参与排序。<br>
-    <span id="stamp"></span>
+    <b>数据来源</b>
+    <div class="srcs">
+      <a href="https://www.antutu.com/ranking/soc" target="_blank" rel="noopener">安兔兔 SoC 天梯榜</a>
+      <a href="https://www.phonearena.com/news/first-snapdragon-8-elite-extreme-gen-6-benchmarks-show-staggering-performance-gains_id183535" target="_blank" rel="noopener">PhoneArena · 骁龙 8 Elite Extreme Gen 6 实测</a>
+      <a href="https://www.tomsguide.com/phones/android-phones/snapdragon-8-elite-gen-6-benchmark-test-results-hands-on-vs-a20-pro-iphone-18-pro" target="_blank" rel="noopener">Tom's Guide · 3DMark 对比</a>
+      <a href="http://k.sina.com.cn/article_7879996426_1d5af340a06801nb5o.html" target="_blank" rel="noopener">天玑 9600 Pro 官方跑分</a>
+      <a href="https://timeline.sohu.com/news/hFSlVzYOBk" target="_blank" rel="noopener">玄戒 O3 实测（小白测评/极客湾）</a>
+    </div>
+    <p style="margin-top:12px">分数仅作横向参考，不构成购买建议。同一颗芯片在不同机型上的表现差异，往往比芯片之间的差距还大。</p>
+    <p id="stamp"></p>
   </footer>
 
 </div>
 
 <script>
+const COLORS = {xiaomi:"var(--xiaomi)", qualcomm:"var(--qualcomm)", mediatek:"var(--mediatek)"};
+
+// ── 多源对比 ──
+const CMP = [
+  {b:"小米", n:"玄戒 O3", c:"xiaomi",
+   antutu:"3,010,770", gb1:"3,854", gb1s:"小白测评零售实测", gbN:"15,096", gbNs:"小白测评零售实测",
+   d3:"4,744", d3s:"Steel Nomad Light", best:["antutu","gbN"]},
+
+  {b:"高通", n:"骁龙 8 超级至尊版 Gen 6", c:"qualcomm",
+   antutu:"2,912,164", gb1:"4,300", gb1s:"PhoneArena QRD 参考设计", gbN:"13,000", gbNs:"PhoneArena QRD 参考设计",
+   d3:"9,900", d3s:"Wild Life Extreme", best:["gb1","d3"]},
+
+  {b:"联发科", n:"天玑 9600 Pro", c:"mediatek",
+   antutu:"2,801,365", gb1:"4,291", gb1s:"工程机实测", gbN:"12,807", gbNs:"工程机实测",
+   d3:"4,475", d3s:"Steel Nomad Light", best:[]},
+
+  {b:"高通", n:"骁龙 8 至尊版 Gen 6", c:"qualcomm",
+   antutu:"2,657,880", gb1:null, gb1s:"暂无公开数据", gbN:null, gbNs:"暂无公开数据",
+   d3:null, d3s:"暂无公开数据", best:[]},
+
+  {b:"高通", n:"骁龙 8 至尊版 Gen 5", c:"qualcomm",
+   antutu:"2,449,060", gb1:"3,500", gb1s:"PhoneArena 实测", gbN:"10,700", gbNs:"PhoneArena 实测",
+   d3:"7,000", d3s:"Wild Life Extreme", best:[]},
+
+  {b:"联发科", n:"天玑 9500", c:"mediatek",
+   antutu:"2,299,863", gb1:"3,666", gb1s:"官方公布", gbN:"11,014", gbNs:"官方公布",
+   d3:null, d3s:"暂无公开数据", best:[]}
+];
+
+const cell = (v, sub, isBest) => v
+  ? `<td class="num${isBest?" best":""}">${v}${isBest?'<span class="bestmark">最高</span>':""}<small>${sub}</small></td>`
+  : `<td class="num na">—<small>${sub}</small></td>`;
+
+document.getElementById("cmp").innerHTML = CMP.map(d=>`
+  <tr>
+    <td>
+      <div class="chip-cell">
+        <span class="tag" style="background:${COLORS[d.c]}">${d.b}</span>
+        <span class="cname">${d.n}</span>
+      </div>
+    </td>
+    ${cell(d.antutu, "安兔兔总分", d.best.includes("antutu"))}
+    ${cell(d.gb1, d.gb1s, d.best.includes("gb1"))}
+    ${cell(d.gbN, d.gbNs, d.best.includes("gbN"))}
+    ${cell(d.d3, d.d3s, d.best.includes("d3"))}
+  </tr>`).join("");
+
+// ── 安兔兔完整榜 ──
 const DATA = [
   {r:1,  b:"小米",   n:"玄戒 O3",                c:"xiaomi",   cpu:1178051, gpu:1832719, t:3010770, a:"2×4.35GHz C1-Ultra + 4×3.68GHz C1-Premium + 4×3.15GHz C1-Pro · 10 核全大核"},
   {r:2,  b:"高通",   n:"骁龙 8 超级至尊版 Gen 6", c:"qualcomm", cpu:1161762, gpu:1750402, t:2912164, a:"2×5.07GHz Oryon Prime + 3×4.03 + 3×3.74GHz Oryon"},
@@ -216,22 +292,10 @@ const DATA = [
   {r:20, b:"联发科", n:"天玑 8500 Elite",        c:"mediatek", cpu: 674244, gpu: 716224, t:1390468, a:"1×3.40GHz A725 + 3×3.20GHz A725 + 4×2.20GHz A725"}
 ];
 
-const COLORS = {xiaomi:"var(--xiaomi)", qualcomm:"var(--qualcomm)", mediatek:"var(--mediatek)"};
 const MAX = DATA[0].t;
 const fmt = n => n.toLocaleString("en-US");
 
-// 领奖台
-document.getElementById("podium").innerHTML = DATA.slice(0,3).map((d,i)=>`
-  <article class="pod p${i+1}" style="--c:${COLORS[d.c]}">
-    <div class="rank-n">${String(d.r).padStart(2,"0")}</div>
-    <div class="brand" style="color:${COLORS[d.c]}">${d.b}</div>
-    <div class="name">${d.n}</div>
-    <div class="score">${fmt(d.t)}<span>分</span></div>
-    <div class="bar-mini"><i style="width:${(d.t/MAX*100).toFixed(1)}%"></i></div>
-  </article>`).join("");
-
-// 4-20
-document.getElementById("list").innerHTML = DATA.slice(3).map(d=>`
+document.getElementById("list").innerHTML = DATA.map(d=>`
   <div class="row" style="--c:${COLORS[d.c]}">
     <div class="idx">${d.r}</div>
     <div class="body">
